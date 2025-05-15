@@ -55,6 +55,7 @@ func main() {
 		BodyLimit:             2.5 * 1024 * 1024, // 2.5MB limit
 	})
 
+	app.Use(utils.Cors())
 	app.Use(logger.New())
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestSpeed,
