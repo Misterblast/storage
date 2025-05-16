@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Firebase Storage Tree</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 1.2rem;
+    }
+    li {
+      margin: 4px 0;
+    }
+    .folder::before {
+      content: "📁 ";
+    }
+    .file::before {
+      content: "📄 ";
+    }
+    .tree {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h2>📂 Pilih Tree</h2>
+  <button onclick="fetchAndRender('/tree')">🌐 Firebase Tree</button>
+  <button onclick="fetchAndRender('/local-tree')">💾 Local /storage Tree</button>
+
+  <div class="tree" id="treeContainer">Klik salah satu tombol di atas</div>
+
+  <script>
+  async function fetchAndRender(endpoint) {
+    const res = await fetch(endpoint);
+    const data = await res.json();
+    const container = document.getElementById("treeContainer");
+    container.innerHTML = renderTree(data);
+  }
+
+  function renderTree(nodes) {
+    let html = "<ul>";
+    for (const node of nodes) {
+      html += "<li class='" + (node.is_file ? "file" : "folder") + "'>";
+      html += node.name;
+      if (node.children && node.children.length > 0) {
+        html += renderTree(node.children);
+      }
+      html += "</li>";
+    }
+    html += "</ul>";
+    return html;
+  }
+</script>
+</body>
+</html>

@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/ghulammuzz/misterblast-storage/database"
+	"github.com/ghulammuzz/misterblast-storage/file"
+	"github.com/ghulammuzz/misterblast-storage/gcs"
 	"github.com/ghulammuzz/misterblast-storage/handler"
 	"github.com/ghulammuzz/misterblast-storage/utils"
 	log "github.com/ghulammuzz/misterblast-storage/utils"
@@ -71,13 +73,16 @@ func main() {
 
 	// app.Use(validateHeader)
 
+	app.Static("/gcs", "./public")
+	app.Static("/storage", "./storage")
+
 	app.Post("/file", handler.Upload)
 	app.Get("/file", handler.ServeImage)
 	app.Get("/file/placeholder.png", func(c *fiber.Ctx) error {
 		return c.SendFile("storage/placeholder.png")
 	})
 
-	// app.Post("/file", validateHeader, handler.Upload)
+	// app.Post(d"/file", validateHeader, handler.Upload)
 	// app.Get("/file", validateHeader, handler.ServeImage)
 	// app.Get("/file/placeholder.png", validateHeader, func(c *fiber.Ctx) error {
 	// 	return c.SendFile("storage/placeholder.png")
@@ -86,6 +91,9 @@ func main() {
 	app.Delete("/file", validateHeader, handler.Delete)
 	app.Use("/file", func(c *fiber.Ctx) error { return validateHeader(c) })
 	// app.Get("/token", handler.FirebaseToken)
+
+	app.Get("/tree", gcs.GetStorageTree)
+	app.Get("/local-tree", file.GetLocalTree)
 
 	port := os.Getenv("PORT")
 	if port == "" {
