@@ -14,6 +14,7 @@ FROM alpine:3.21
 WORKDIR /root/
 
 COPY --from=builder /app/main .
+COPY --from=builder /app/public ./public
 
 EXPOSE 6012
 
