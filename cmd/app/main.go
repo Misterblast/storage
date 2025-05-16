@@ -71,11 +71,18 @@ func main() {
 
 	// app.Use(validateHeader)
 
-	app.Post("/file", validateHeader, handler.Upload)
-	app.Get("/file", validateHeader, handler.ServeImage)
-	app.Get("/file/placeholder.png", validateHeader, func(c *fiber.Ctx) error {
+	app.Post("/file", handler.Upload)
+	app.Get("/file", handler.ServeImage)
+	app.Get("/file/placeholder.png", func(c *fiber.Ctx) error {
 		return c.SendFile("storage/placeholder.png")
 	})
+
+	// app.Post("/file", validateHeader, handler.Upload)
+	// app.Get("/file", validateHeader, handler.ServeImage)
+	// app.Get("/file/placeholder.png", validateHeader, func(c *fiber.Ctx) error {
+	// 	return c.SendFile("storage/placeholder.png")
+	// })
+
 	app.Delete("/file", validateHeader, handler.Delete)
 	app.Use("/file", func(c *fiber.Ctx) error { return validateHeader(c) })
 	// app.Get("/token", handler.FirebaseToken)
