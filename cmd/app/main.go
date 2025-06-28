@@ -54,7 +54,7 @@ func main() {
 		ReadTimeout:           10 * time.Second,
 		WriteTimeout:          10 * time.Second,
 		IdleTimeout:           30 * time.Second,
-		BodyLimit:             2.5 * 1024 * 1024, // 2.5MB limit
+		// BodyLimit:             2.5 * 1024 * 1024,
 	})
 
 	app.Use(utils.Cors())
@@ -77,6 +77,7 @@ func main() {
 	app.Static("/storage", "./storage")
 
 	app.Post("/file", handler.Upload)
+	app.Post("/file-admin", handler.UploadAdmin)
 	app.Get("/file", handler.ServeImage)
 	app.Get("/file/placeholder.png", func(c *fiber.Ctx) error {
 		return c.SendFile("storage/placeholder.png")

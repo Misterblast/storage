@@ -14,13 +14,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Upload(c *fiber.Ctx) error {
+func UploadAdmin(c *fiber.Ctx) error {
 	files, err := c.FormFile("file")
 	if err != nil {
 		return utils.JSON(c, 400, "No file uploaded", nil)
 	}
 
-	const maxFileSize = 3 << 20
+	const maxFileSize = 10 << 20
 	if files.Size > maxFileSize {
 		return utils.JSON(c, 400, "File size exceeds 10MB limit", nil)
 	}
