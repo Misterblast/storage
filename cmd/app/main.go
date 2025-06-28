@@ -54,7 +54,7 @@ func main() {
 		ReadTimeout:           10 * time.Second,
 		WriteTimeout:          10 * time.Second,
 		IdleTimeout:           30 * time.Second,
-		// BodyLimit:             2.5 * 1024 * 1024,
+		BodyLimit:             15 * 1024 * 1024,
 	})
 
 	app.Use(utils.Cors())
