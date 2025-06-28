@@ -34,6 +34,7 @@ func init() {
 		mlog.Info("Environment: production (using system environment variables)")
 	}
 
+	utils.Init()
 	log.InitLogger("dev", false, "")
 	// log.InitLogger("prod", true, "http://localhost:3100/loki/api/v1/push")
 
@@ -102,6 +103,8 @@ func main() {
 	}
 
 	log.Info("Server running on port:", port)
+
+	go utils.StartPrometheusExporter()
 
 	if err := app.Listen(fmt.Sprint(":", port)); err != nil {
 		log.Error("Failed to start the server: %v", err)
